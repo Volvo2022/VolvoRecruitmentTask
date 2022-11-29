@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npx wdio run wdio.conf.js"
+    "test": "npx wdio run wdio.conf.js",
+    "test:report": "allure generate --clean",
+    "test:openReport": "allure open"
   },
   "repository": {
     "type": "git",

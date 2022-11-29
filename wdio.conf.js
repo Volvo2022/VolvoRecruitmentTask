@@ -64,19 +64,34 @@ exports.config = {
     // https://saucelabs.com/platform/platform-configurator
     //
     capabilities: [{
-    
-        // maxInstances can get overwritten per capability. So if you have an in-house Selenium
-        // grid with only 5 firefox instances available you can make sure that not more than
-        // 5 instances get started at a time.
-        maxInstances: 5,
-        //
-        browserName: 'firefox',
-        acceptInsecureCerts: true
-        // If outputDir is provided WebdriverIO can capture driver session logs
-        // it is possible to configure which logTypes to include/exclude.
-        // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
-        // excludeDriverLogs: ['bugreport', 'server'],
-    }],
+
+            // maxInstances can get overwritten per capability. So if you have an in-house Selenium
+            // grid with only 5 firefox instances available you can make sure that not more than
+            // 5 instances get started at a time.
+            maxInstances: 5,
+            //
+            browserName: 'chrome',
+            acceptInsecureCerts: true
+            // If outputDir is provided WebdriverIO can capture driver session logs
+            // it is possible to configure which logTypes to include/exclude.
+            // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
+            // excludeDriverLogs: ['bugreport', 'server'],
+        }
+        // ,
+        // {
+
+        //     // maxInstances can get overwritten per capability. So if you have an in-house Selenium
+        //     // grid with only 5 firefox instances available you can make sure that not more than
+        //     // 5 instances get started at a time.
+        //     maxInstances: 5,
+        //     //
+        //     browserName: 'firefox'
+        //     // If outputDir is provided WebdriverIO can capture driver session logs
+        //     // it is possible to configure which logTypes to include/exclude.
+        //     // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
+        //     // excludeDriverLogs: ['bugreport', 'server'],
+        // }
+    ],
     //
     // ===================
     // Test Configurations
@@ -125,7 +140,7 @@ exports.config = {
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
     services: ['docker'],
-    
+
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
     // see also: https://webdriver.io/docs/frameworks
@@ -146,10 +161,16 @@ exports.config = {
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
-    reporters: [['allure', {outputDir: 'allure-results'}]],
+    reporters: [
+        ['allure', {
+            outputDir: 'allure-results',
+            disableWebdriverStepsReporting: true,
+            disableWebdriverScreenshotsReporting: false,
+        }]
+    ],
 
 
-    
+
     //
     // Options to be passed to Mocha.
     // See the full list at http://mochajs.org/
@@ -251,10 +272,19 @@ exports.config = {
      * @param {Boolean} result.passed    true if test has passed, otherwise false
      * @param {Object}  result.retries   informations to spec related retries, e.g. `{ attempts: 0, limit: 0 }`
      */
-    afterTest: async function(test, context, { error, result, duration, passed, retries }) {
-        if (!passed) {
+    afterTest: async function (test, context, {
+        error,
+        result,
+        duration,
+        passed,
+        retries
+    }) {
+        // if (!passed) {
+        //     await browser.takeScreenshot();
+        // }
+        if (error) {
             await browser.takeScreenshot();
-        }
+          }
     },
 
 
@@ -301,10 +331,10 @@ exports.config = {
     // onComplete: function(exitCode, config, capabilities, results) {
     // },
     /**
-    * Gets executed when a refresh happens.
-    * @param {String} oldSessionId session ID of the old session
-    * @param {String} newSessionId session ID of the new session
-    */
+     * Gets executed when a refresh happens.
+     * @param {String} oldSessionId session ID of the old session
+     * @param {String} newSessionId session ID of the new session
+     */
     // onReload: function(oldSessionId, newSessionId) {
     // }
 }
